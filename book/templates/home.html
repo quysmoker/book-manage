@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Management System</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Book Management System</h1>
+            <p>Quản lý danh sách sách của bạn</p>
+        </header>
+
+        <!-- Filter Form -->
+        <section class="filter-section">
+            <h3>🔍 Tìm kiếm và Lọc</h3>
+            <div class="filter-form">
+                <div class="form-group">
+                    <label for="titleFilter">Tên sách:</label>
+                    <input type="text" id="titleFilter" placeholder="Nhập tên sách...">
+                </div>
+                <div class="form-group">
+                    <label for="authorFilter">Tác giả:</label>
+                    <input type="text" id="authorFilter" placeholder="Nhập tên tác giả...">
+                </div>
+                <button class="btn btn-search" onclick="applyFilters()">🔎 Tìm kiếm</button>
+                <button class="btn btn-reset" onclick="resetFilters()">↻ Đặt lại</button>
+            </div>
+        </section>
+
+        <!-- Add Book Form -->
+        <section class="add-book-section">
+            <h3>➕ Thêm Sách Mới</h3>
+            <form id="addBookForm" class="add-book-form">
+                <div class="form-group">
+                    <label for="title">Tên sách:</label>
+                    <input type="text" id="title" placeholder="Nhập tên sách" required>
+                </div>
+                <div class="form-group">
+                    <label for="author">Tác giả:</label>
+                    <input type="text" id="author" placeholder="Nhập tên tác giả" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Giá:</label>
+                    <input type="number" id="price" placeholder="Nhập giá" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Số lượng:</label>
+                    <input type="number" id="quantity" placeholder="Nhập số lượng" required>
+                </div>
+                <button type="submit" class="btn btn-primary">➕ Thêm Sách</button>
+            </form>
+        </section>
+
+        <!-- Page Size Selector -->
+        <section class="page-size-section">
+            <label for="pageSize">Hiển thị mỗi trang:</label>
+            <select id="pageSize" onchange="changePageSize()">
+                <option value="20">20 record</option>
+                <option value="100">100 record</option>
+            </select>
+        </section>
+
+        <!-- Books Table -->
+        <section class="books-section">
+            <h3>📖 Danh Sách Sách</h3>
+            <div id="loadingSpinner" class="spinner"></div>
+            <table id="booksTable" class="books-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên Sách</th>
+                        <th>Tác Giả</th>
+                        <th>Giá</th>
+                        <th>Số Lượng</th>
+                        <th>Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody id="booksTableBody">
+                    <!-- Books will be inserted here -->
+                </tbody>
+            </table>
+            <div id="emptyMessage" class="empty-message">Không có sách nào. Vui lòng thêm sách mới.</div>
+        </section>
+
+        <!-- Pagination -->
+        <section class="pagination-section">
+            <button id="prevBtn" class="btn btn-pagination" onclick="goToPreviousPage()">◀ Trang trước</button>
+            <span id="pageInfo" class="page-info">Trang 1</span>
+            <button id="nextBtn" class="btn btn-pagination" onclick="goToNextPage()">Trang sau ▶</button>
+        </section>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>Chỉnh Sửa Sách</h2>
+            <form id="editBookForm" class="edit-book-form">
+                <input type="hidden" id="editBookId">
+                <div class="form-group">
+                    <label for="editTitle">Tên sách:</label>
+                    <input type="text" id="editTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="editAuthor">Tác giả:</label>
+                    <input type="text" id="editAuthor" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPrice">Giá:</label>
+                    <input type="number" id="editPrice" required>
+                </div>
+                <div class="form-group">
+                    <label for="editQuantity">Số lượng:</label>
+                    <input type="number" id="editQuantity" required>
+                </div>
+                <button type="submit" class="btn btn-primary">💾 Lưu</button>
+                <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Hủy</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDetailModal()">&times;</span>
+            <h2>Chi Tiết Sách</h2>
+            <div id="detailContent" class="detail-content">
+                <!-- Book details will be inserted here -->
+            </div>
+            <button type="button" class="btn btn-secondary" onclick="closeDetailModal()">Đóng</button>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notification" class="notification"></div>
+
+    <script src="{% static 'js/app.js' %}"></script>
+</body>
+
+</html>
