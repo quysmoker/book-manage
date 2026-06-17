@@ -1,6 +1,7 @@
+
 import { useState } from 'react';
 
-export const AddBookForm = ({ onSubmit, loading }) => {
+const AddBookForm = ({ onSubmit, loading }) => {
     const [formData, setFormData] = useState({
         title: '',
         author: '',
@@ -10,7 +11,8 @@ export const AddBookForm = ({ onSubmit, loading }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
+
+        setFormData((prev) => ({
             ...prev,
             [name]: value
         }));
@@ -19,9 +21,13 @@ export const AddBookForm = ({ onSubmit, loading }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Validation
-        if (!formData.title || !formData.author || !formData.price || !formData.quantity) {
-            alert('Vui lòng điền tất cả các trường');
+        if (
+            !formData.title ||
+            !formData.author ||
+            !formData.price ||
+            !formData.quantity
+        ) {
+            alert('Vui lòng nhập đầy đủ thông tin');
             return;
         }
 
@@ -32,7 +38,6 @@ export const AddBookForm = ({ onSubmit, loading }) => {
             quantity: parseInt(formData.quantity)
         });
 
-        // Reset form
         setFormData({
             title: '',
             author: '',
@@ -42,72 +47,133 @@ export const AddBookForm = ({ onSubmit, loading }) => {
     };
 
     return (
-        <div className="section" style={{ background: '#f0f7ff' }}>
-            <h3>➕ Thêm Sách Mới</h3>
-            <form onSubmit={handleSubmit} className="form-container">
-                <div className="form-row">
-                    <div className="form-group">
-                        <label htmlFor="title">Tên sách *</label>
+        <div
+            style={{
+                background: '#ffffff',
+                borderRadius: '12px',
+                padding: '24px',
+                marginBottom: '24px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+            }}
+        >
+            <h2
+                style={{
+                    marginBottom: '20px',
+                    color: '#1976d2'
+                }}
+            >
+                📚 Thêm Sách Mới
+            </h2>
+
+            <form onSubmit={handleSubmit}>
+                <div
+                    style={{
+                        display: 'grid',
+                        gridTemplateColumns:
+                            'repeat(auto-fit, minmax(250px, 1fr))',
+                        gap: '16px'
+                    }}
+                >
+                    <div>
+                        <label>Tên sách</label>
+
                         <input
                             type="text"
-                            id="title"
                             name="title"
-                            placeholder="Nhập tên sách"
+                            placeholder="Ví dụ: Django Advanced"
                             value={formData.title}
                             onChange={handleChange}
                             required
+                            style={{
+                                width: '100%',
+                                padding: '10px',
+                                marginTop: '6px',
+                                borderRadius: '6px',
+                                border: '1px solid #ddd'
+                            }}
                         />
                     </div>
 
-                    <div className="form-group">
-                        <label htmlFor="author">Tác giả *</label>
+                    <div>
+                        <label>Tác giả</label>
+
                         <input
                             type="text"
-                            id="author"
                             name="author"
-                            placeholder="Nhập tên tác giả"
+                            placeholder="Ví dụ: Nguyễn Văn A"
                             value={formData.author}
                             onChange={handleChange}
                             required
+                            style={{
+                                width: '100%',
+                                padding: '10px',
+                                marginTop: '6px',
+                                borderRadius: '6px',
+                                border: '1px solid #ddd'
+                            }}
                         />
                     </div>
 
-                    <div className="form-group">
-                        <label htmlFor="price">Giá *</label>
+                    <div>
+                        <label>Giá</label>
+
                         <input
                             type="number"
-                            id="price"
                             name="price"
-                            placeholder="Nhập giá"
+                            placeholder="100000"
                             value={formData.price}
                             onChange={handleChange}
                             required
                             min="0"
+                            style={{
+                                width: '100%',
+                                padding: '10px',
+                                marginTop: '6px',
+                                borderRadius: '6px',
+                                border: '1px solid #ddd'
+                            }}
                         />
                     </div>
 
-                    <div className="form-group">
-                        <label htmlFor="quantity">Số lượng *</label>
+                    <div>
+                        <label>Số lượng</label>
+
                         <input
                             type="number"
-                            id="quantity"
                             name="quantity"
-                            placeholder="Nhập số lượng"
+                            placeholder="10"
                             value={formData.quantity}
                             onChange={handleChange}
                             required
                             min="0"
+                            style={{
+                                width: '100%',
+                                padding: '10px',
+                                marginTop: '6px',
+                                borderRadius: '6px',
+                                border: '1px solid #ddd'
+                            }}
                         />
                     </div>
                 </div>
 
                 <button
                     type="submit"
-                    className="btn btn-success"
                     disabled={loading}
-                    style={{ alignSelf: 'flex-start' }}
+                    style={{
+                        marginTop: '20px',
+                        padding: '12px 24px',
+                        background: '#1976d2',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontWeight: 'bold'
+                    }}
                 >
-                    ➕ Thêm Sách
+                    {loading
+                        ? 'Đang thêm...'
+                        : '➕ Thêm Sách'}
                 </button>
             </form>
         </div>

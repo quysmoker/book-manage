@@ -9,39 +9,46 @@ const apiClient = axios.create({
     },
 });
 
-// Book Services
+apiClient.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('access');
+
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
 export const bookService = {
-    // Get all books with pagination and filters
     getBooks: (page = 1, pageSize = 20, filters = {}) => {
         const params = {
             page,
             page_size: pageSize,
             ...filters,
         };
+
         return apiClient.get('/books/', { params });
     },
 
-    // Get book detail
     getBookDetail: (id) => {
         return apiClient.get(`/books/${id}/`);
     },
 
-    // Create new book
     createBook: (data) => {
         return apiClient.post('/books/', data);
     },
 
-    // Update book (PUT)
     updateBook: (id, data) => {
         return apiClient.put(`/books/${id}/`, data);
     },
 
-    // Partial update book (PATCH)
     partialUpdateBook: (id, data) => {
         return apiClient.patch(`/books/${id}/`, data);
     },
 
-    // Delete book
     deleteBook: (id) => {
         return apiClient.delete(`/books/${id}/`);
     },

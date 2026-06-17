@@ -6,6 +6,7 @@ from django.shortcuts import render
 from book.models import Book
 from book.serializers import BookListSerializer
 from book.pagination import BookPagination
+from rest_framework.permissions import IsAuthenticated
 
 
 # Custom Filter Function
@@ -90,9 +91,9 @@ class BookViewSet(viewsets.ModelViewSet):
     - quantity_min: Số lượng tối thiểu
     - quantity_max: Số lượng tối đa
     """
-    queryset = Book.objects.all()
+    queryset = Book.objects.all().order_by("id")
     serializer_class = BookListSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     pagination_class = BookPagination
     
     def get_queryset(self):
